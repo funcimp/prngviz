@@ -8,7 +8,7 @@ function rand_seed() {
 
 // based on the code from
 // https://coolaj86.com/articles/convert-decimal-to-hex-with-js-bigints/
-function bnToHex(bn) {
+function bigIntToHex(bn) {
     bn = BigInt(bn);
 
     var pos = true;
@@ -42,7 +42,7 @@ function bitnot(bn) {
 // based on the code from
 // https://coolaj86.com/articles/convert-hex-to-decimal-with-js-bigints/
 
-function hexToBn(hex) {
+function hexToBigInt(hex) {
     if (hex.length % 2) {
         hex = '0' + hex;
     }
@@ -60,15 +60,8 @@ function hexToBn(hex) {
 
 
 
-
-console.log(rand_seed())
-
 let rand = new XoShiRo256PlusPlus(...rand_seed())
-
 let a = rand.nextBigInt()
-
-console.log(a.toString(16), a.toString(16).length)
-console.log(bnToHex(a), bnToHex(a).length)
+console.log(bigIntToHex(a), bigIntToHex(a).length)
 console.log(a)
-console.log(hexToBn(bnToHex(a)))
-console.log(hexToBn(a.toString(16)))
+console.log(hexToBigInt(bigIntToHex(a)))
