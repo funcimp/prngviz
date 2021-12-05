@@ -1,5 +1,8 @@
 <script>
-	import {} from 'prng-xoshiro';
+	import { XoShiRo128PlusPlus } from 'prng-xoshiro';
+	import { gen_rand_seed, nextRGB, nextBinary } from '../lib/utils.js';
+	let rand = new XoShiRo128PlusPlus(gen_rand_seed());
+	console.log(rand.nextNumber());
 </script>
 
 <h1>Welcome to SvelteKit</h1>
