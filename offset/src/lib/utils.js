@@ -1,19 +1,63 @@
 
 
 // rand_seed generates a 32 bit uint as a padded hex eg (07d92112)
-export function rand_seed() {
-    return (Math.floor(Math.random() * 0xFFFFFFFFFFFFF) >>> 0).toString(16).padStart(8, '0');
+export function newSeed() {
+    return toPaddedHex((Math.floor(Math.random() * 0xFFFFFFFFFFFFF) >>> 0), 8);
 }
 
-export function generator(seed) {
+export function bitGen(seed) {
+    let next = generator(seed)
+    return () => toBit(next())
+}
+
+export function hexGen8bit(seed) {
+    let next = vbg(seed, 8)
+    return () => toPaddedHex(next(), 2)
+}
+
+export function hexGen16bit(seed) {
+    let next = vbg(seed, 16)
+    return () => toPaddedHex(next(), 4)
+}
+
+export function hexGen24bit(seed) {
+    let next = vbg(seed, 24)
+    return () => toPaddedHex(next(), 6)
+}
+
+
+// vbg is "variable bit generator" allows you to get a generator that
+// returns a specific bit width result. This is limited to anywhere
+// between 1 bit and 24 bits.
+function vbg(seed, width = 1) {
+    let min = 1
+    let max = 24
+    width = width >>> 0
+    if (width < min) { width = 1 }
+    if (width > max) { width = 24 }
+    let next = bitGen(seed)
+    return () => {
+        let result = 0
+        for (let j = 0; j < width; j++) {
+            result = (result << 1) | next()
+        }
+        return result
+    }
+}
+
+function generator(seed) {
     let next = xorshift32(fromHex(seed))
     let state = new Uint32Array([next(), next(), next(), next()]);
     return xoshiro128pp(state)
 }
 
-export const toBinary = n => n & 1
-export const fromHex = h => parseInt(h, 16)
-export const toRGB = n => (n >>> 0).toString(16).padStart(6, '0').substring(2)
+const toBit = n => n & 1
+const fromHex = h => parseInt(h, 16)
+
+function toPaddedHex(n, width) {
+    let h = (n >>> 0).toString(16).padStart(width, '0')
+    return h.substring(h.length - width)
+}
 
 function xorshift32(a) {
     return () => {
@@ -42,13 +86,8 @@ function xoshiro128pp(s) {
 }
 
 
-let seed = rand_seed()
-let next = generator(seed)
-for (let i = 0; i < 1_000_000; i++) {
-    let rgb = 0
-    for (let j = 0; j < 24; j++) {
-        let n = next()
-        rgb = (rgb << 1) | toBinary(next())
-    }
-    console.log(rgb)
-}
+// let seed = newSeed()
+// let next = hexGen24bit(seed)
+// for (let i = 0; i < 1_000_000; i++) {
+//     console.log(next())
+// }
