@@ -89,5 +89,5 @@ function xoshiro128pp(s) {
 // let seed = newSeed()
 // let next = hexGen24bit(seed)
 // for (let i = 0; i < 1_000_000; i++) {
-//     console.log(next())
+//     console.log(fromHex(next()))
 // }
