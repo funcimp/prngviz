@@ -1,18 +1,25 @@
 <script>
 	import { XoShiRo128PlusPlus } from 'prng-xoshiro/src/xoshiro128';
-	import { gen_rand_seed, nextRGB, nextBinary } from '$lib/utils';
-	import { createQueryStore } from '$lib/query';
+	import { newSeed, hexGen24bit } from '$lib/utils';
+	// import { createQueryStore } from '$lib/query';
 
-	let rand = new XoShiRo128PlusPlus(5555555);
-	console.log(rand.nextNumber());
-	console.log(nextRGB(rand));
+	const seed = newSeed();
+	let next = hexGen24bit(seed);
 
-	const seed = createQueryStore('s');
+	let items = [];
+	for (let i = 0; i < 1000; i++) {
+		items.push(next());
+	}
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-
-{$seed}
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-
-<input bind:value={$seed} />
+<h1>Hi</h1>
+<div class="container">
+	<div class="row">
+		{#each items as item}
+			<div class="column">
+				<div width="3" style="background-color:#{item}; width:5px; height:5px;" />
+			</div>
+		{/each}
+	</div>
+</div>
+<!-- <input bind:value={$seed} /> -->
