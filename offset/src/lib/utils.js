@@ -25,6 +25,9 @@ export function hexGen24bit(seed) {
     return () => toPaddedHex(next(), 6)
 }
 
+export const toBit = n => n & 1
+export const fromHex = h => parseInt(h, 16)
+
 
 // vbg is "variable bit generator" allows you to get a generator that
 // returns a specific bit width result. This is limited to anywhere
@@ -50,9 +53,6 @@ function generator(seed) {
     let state = new Uint32Array([next(), next(), next(), next()]);
     return xoshiro128pp(state)
 }
-
-const toBit = n => n & 1
-const fromHex = h => parseInt(h, 16)
 
 function toPaddedHex(n, width) {
     let h = (n >>> 0).toString(16).padStart(width, '0')
