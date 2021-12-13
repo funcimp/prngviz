@@ -24,3 +24,10 @@
 		</div>
 	{/each} -->
 </div>
+
+<!-- 
+    todo: 
+    - sort out why this takes so long to draw 
+    - handle async rendering better, at leaset use a loading screen
+    - think about ways this could be done in paralle? maybe web workers?
+-->
