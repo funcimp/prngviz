@@ -30,4 +30,6 @@
     - sort out why this takes so long to draw 
     - handle async rendering better, at leaset use a loading screen
     - think about ways this could be done in paralle? maybe web workers?
+	- consider moving over to d3? I think it would be better to use an SVG to make this
+	  and it could open up other visualizations
 -->
