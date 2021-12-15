@@ -32,4 +32,6 @@
     - think about ways this could be done in paralle? maybe web workers?
 	- consider moving over to d3? I think it would be better to use an SVG to make this
 	  and it could open up other visualizations
+	- with the move to d3, maybe ther are other visualizations that could also be cool?
+	
 -->
