@@ -1,6 +1,8 @@
 <script>
-	import { newSeed, hexGen24bit, fromHex, toBit } from '$lib/utils';
-	import { generateItems, makeGrid } from '$lib/grid';
+	import * as d3 from 'd3';
+	// import { newSeed, hexGen24bit, fromHex, toBit } from '$lib/utils';
+	import { generateItems, makeGrid, gridData } from '$lib/grid';
+	import { onMount } from 'svelte';
 
 	export let length = '300';
 	export let seed = '5252';
@@ -13,7 +15,39 @@
 		gridItems = g;
 	}
 	updateG();
+
+	onMount(async () => {
+		var gd = gridData();
+
+		var grid = d3.select('#grid').append('svg').attr('width', '510px').attr('height', '510px');
+		var row = grid.selectAll('.row').data(gd).enter().append('g').attr('class', 'row');
+
+		var column = row
+			.selectAll('.square')
+			.data(function (d) {
+				return d;
+			})
+			.enter()
+			.append('rect')
+			.attr('class', 'square')
+			.attr('x', function (d) {
+				return d.x;
+			})
+			.attr('y', function (d) {
+				return d.y;
+			})
+			.attr('width', function (d) {
+				return d.width;
+			})
+			.attr('height', function (d) {
+				return d.height;
+			})
+			.style('fill', '#fff')
+			.style('stroke', '#222');
+	});
 </script>
+
+<div id="grid" />
 
 <h1>Hello</h1>
 <div class="container">
