@@ -10,10 +10,10 @@ export function generateItems(seed, length) {
     }
     const offSet = (i, l) => l.slice(i, l.length).concat(l.slice(0, i));
     for (let i = 0; i < length; i++) {
-        itemsList.push(items)
-        // let b = toBit(fromHex(items[i]));
-        // if (b === 0) b = -1;
-        // itemsList.push(offSet(b * i, items));
+        // itemsList.push(items)
+        let b = toBit(fromHex(items[i]));
+        if (b === 0) b = -1;
+        itemsList.push(offSet(b * i, items));
     }
     return [items, itemsList]
 }
@@ -56,24 +56,28 @@ export function makeGrid(items, itemsList, size) {
 // {/each}
 
 
-export function gridData() {
+export function gridData(seed) {
     var data = new Array();
     var xpos = 1; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
     var ypos = 1;
-    var width = 50;
-    var height = 50;
+    var width = 2;
+    var height = 2;
+    var length = 600;
+    let [items, itemsList] = generateItems(seed, length);
+
 
     // iterate for rows 
-    for (var row = 0; row < 10; row++) {
+    for (var row = 0; row < length; row++) {
         data.push(new Array());
 
         // iterate for cells/columns inside rows
-        for (var column = 0; column < 10; column++) {
+        for (var column = 0; column < length; column++) {
             data[row].push({
                 x: xpos,
                 y: ypos,
                 width: width,
-                height: height
+                height: height,
+                fill: itemsList[row][column]
             })
             // increment the x position. I.e. move it over by 50 (width variable)
             xpos += width;

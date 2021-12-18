@@ -6,20 +6,20 @@
 
 	export let length = '300';
 	export let seed = '5252';
-	let size = '2px';
+	// let size = '2px';
 
-	let [items, itemsList] = generateItems(seed, length);
-	let gridItems = 'rendering...';
-	async function updateG() {
-		let g = makeGrid(items, itemsList, size);
-		gridItems = g;
-	}
-	updateG();
+	// let [items, itemsList] = generateItems(seed, length);
+	// let gridItems = 'rendering...';
+	// async function updateG() {
+	// 	let g = makeGrid(items, itemsList, size);
+	// 	gridItems = g;
+	// }
+	// updateG();
 
 	onMount(async () => {
-		var gd = gridData();
+		var gd = gridData(seed);
 
-		var grid = d3.select('#grid').append('svg').attr('width', '510px').attr('height', '510px');
+		var grid = d3.select('#grid').append('svg').attr('width', '900px').attr('height', '900px');
 		var row = grid.selectAll('.row').data(gd).enter().append('g').attr('class', 'row');
 
 		var column = row
@@ -42,8 +42,8 @@
 			.attr('height', function (d) {
 				return d.height;
 			})
-			.style('fill', '#fff')
-			.style('stroke', '#222');
+			.style('fill', (d) => `#${d.fill}`);
+		// .style('stroke', '#222');
 	});
 </script>
 
@@ -51,7 +51,7 @@
 
 <h1>Hello</h1>
 <div class="container">
-	{@html gridItems}
+	<!-- {@html gridItems} -->
 	<!-- {#each items as _, i}
 		<div class="row">
 			{@html makeRow(itemsList[i], size)}
