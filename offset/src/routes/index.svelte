@@ -3,7 +3,7 @@
 	import Grid from '$lib/grid.svelte';
 
 	const seed = newSeed();
-	const length = 300;
+	const length = 400;
 </script>
 
 <Grid {length} {seed} />
