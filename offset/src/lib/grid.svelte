@@ -27,7 +27,7 @@
 	});
 </script>
 
-<h1>Hello</h1>
+<h1>{seed}</h1>
 <div class="container">
 	<div id="grid" />
 	<!-- {@html gridItems} -->

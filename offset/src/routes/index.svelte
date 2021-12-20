@@ -1,9 +1,12 @@
 <script>
-	import { newSeed, hexGen24bit, fromHex, toBit } from '$lib/utils';
-	import Grid from '$lib/grid.svelte';
+	import { newSeed } from '$lib/utils';
+	import { goto } from '$app/navigation';
 
-	const seed = newSeed();
-	const length = 400;
+	const handleClick = () => {
+		const length = 250;
+		const seed = newSeed();
+		goto(`/${seed}?len=${length}`);
+	};
 </script>
 
-<Grid {length} {seed} />
+<button on:click={handleClick}>generate random</button>
