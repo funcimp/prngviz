@@ -7,9 +7,8 @@
 	export let length = 300;
 	export let seed = '5252';
 
-	onMount(async () => {
+	onMount(() => {
 		var gd = gridData(seed, length);
-
 		var grid = d3.select('#grid').append('svg').attr('width', '900px').attr('height', '900px');
 		var row = grid.selectAll('.row').data(gd).enter().append('g').attr('class', 'row');
 

@@ -84,10 +84,3 @@ function xoshiro128pp(s) {
         return result & 0x7FFFFFFF;
     }
 }
-
-
-let seed = newSeed()
-let next = bitGen(seed)
-for (let i = 0; i < 100_000_000; i++) {
-    next()
-}
