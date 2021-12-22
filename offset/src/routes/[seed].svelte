@@ -4,27 +4,15 @@
 	import RandomButton from '$lib/randomButton.svelte';
 	import { onMount } from 'svelte';
 
-	let seed;
 	let length;
+	let seed;
 
-	let update = () => {
-		location.reload();
-	};
-
-	onMount(async () => {
+	onMount(() => {
 		length = parseInt($page.query.get('len')) || 250;
 		seed = $page.params.seed;
 	});
-
-	const notify = (s) => {
-		seed = null;
-		update();
-	};
 </script>
 
-<RandomButton {notify} />
-{#if seed}
-	<Grid {length} {seed} />
-{:else}
-	<h3>loading...</h3>
-{/if}
+<RandomButton bind:seed />
+<br />
+<Grid {length} {seed} />

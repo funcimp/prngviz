@@ -1,18 +1,24 @@
 <script>
 	import * as d3 from 'd3';
-	// import { newSeed, hexGen24bit, fromHex, toBit } from '$lib/utils';
+	import Loading from '$lib/loading.svelte';
 	import { gridData } from '$lib/grid';
-	import { onMount } from 'svelte';
+	import { beforeUpdate, afterUpdate, onMount } from 'svelte';
 
 	export let length = 300;
-	export let seed = '5252';
+	export let seed;
 
-	onMount(() => {
-		var gd = gridData(seed, length);
-		var grid = d3.select('#grid').append('svg').attr('width', '900px').attr('height', '900px');
-		var row = grid.selectAll('.row').data(gd).enter().append('g').attr('class', 'row');
+	let ready = false;
 
-		var column = row
+	const drawGrid = () => {
+		ready = false;
+		d3.select('#grid').selectAll('*').remove();
+		if (!seed) {
+			return;
+		}
+		let gd = gridData(seed, length);
+		let grid = d3.select('#grid').append('svg').attr('width', '900px').attr('height', '900px');
+		let row = grid.selectAll('.row').data(gd).enter().append('g').attr('class', 'row');
+		row
 			.selectAll('.square')
 			.data((d) => d)
 			.enter()
@@ -23,18 +29,29 @@
 			.attr('width', (d) => d.width)
 			.attr('height', (d) => d.height)
 			.style('fill', (d) => `#${d.fill}`);
+		ready = true;
+	};
+
+	onMount(() => {
+		console.log('on mount', seed);
+		drawGrid();
+	});
+	beforeUpdate(() => {
+		console.log('before update', seed);
+		drawGrid();
+	});
+	afterUpdate(() => {
+		console.log('after update', seed);
 	});
 </script>
 
-<h1>{seed}</h1>
+{#if ready}
+	<h1>{seed}</h1>
+{:else}
+	<Loading />
+{/if}
 <div class="container">
 	<div id="grid" />
-	<!-- {@html gridItems} -->
-	<!-- {#each items as _, i}
-		<div class="row">
-			{@html makeRow(itemsList[i], size)}
-		</div>
-	{/each} -->
 </div>
 
 <!-- 

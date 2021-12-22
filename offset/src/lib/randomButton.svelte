@@ -3,12 +3,11 @@
 	import { goto } from '$app/navigation';
 
 	export let length = 250;
-	export let notify = (s) => {};
+	export let seed = null;
 
 	const handleClick = async () => {
-		const seed = newSeed();
-		goto(`/${seed}?len=${length}`, { keepfocus: false });
-		notify(seed);
+		seed = newSeed();
+		goto(`/${seed}?len=${length}`, { keepfocus: true });
 	};
 </script>
 
