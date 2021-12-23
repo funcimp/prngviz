@@ -2,7 +2,7 @@
 	import * as d3 from 'd3';
 	import Loading from '$lib/loading.svelte';
 	import { gridData } from '$lib/grid';
-	import { beforeUpdate, afterUpdate, onMount } from 'svelte';
+	import { beforeUpdate, afterUpdate, tick } from 'svelte';
 
 	export let length = 300;
 	export let seed;
@@ -10,7 +10,6 @@
 	let ready = false;
 
 	const drawGrid = () => {
-		ready = false;
 		d3.select('#grid').selectAll('*').remove();
 		if (!seed) {
 			return;
@@ -29,19 +28,15 @@
 			.attr('width', (d) => d.width)
 			.attr('height', (d) => d.height)
 			.style('fill', (d) => `#${d.fill}`);
-		ready = true;
 	};
 
-	onMount(() => {
-		console.log('on mount', seed);
+	beforeUpdate(async () => {
+		console.log('before update', seed, ready);
 		drawGrid();
+		ready = true;
 	});
-	beforeUpdate(() => {
-		console.log('before update', seed);
-		drawGrid();
-	});
-	afterUpdate(() => {
-		console.log('after update', seed);
+	afterUpdate(async () => {
+		console.log('after update', seed, ready);
 	});
 </script>
 
@@ -51,7 +46,7 @@
 	<Loading />
 {/if}
 <div class="container">
-	<div id="grid" />
+	<div id="grid" hidden={!ready} />
 </div>
 
 <!-- 
