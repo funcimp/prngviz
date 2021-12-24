@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import Grid from '$lib/grid.svelte';
-	import RandomButton from '$lib/randomButton.svelte';
+	import VisSelector from '$lib/visSelector.svelte';
 	import { onMount } from 'svelte';
 
 	let length;
@@ -13,6 +13,6 @@
 	});
 </script>
 
-<RandomButton bind:seed />
+<VisSelector bind:seed bind:length />
 <br />
 <Grid {length} {seed} />

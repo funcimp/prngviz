@@ -31,12 +31,12 @@
 	};
 
 	beforeUpdate(async () => {
-		console.log('before update', seed, ready);
+		// console.log('before update', seed, ready);
 		drawGrid();
 		ready = true;
 	});
 	afterUpdate(async () => {
-		console.log('after update', seed, ready);
+		// console.log('after update', seed, ready);
 	});
 </script>
 

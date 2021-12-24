@@ -1,5 +1,5 @@
 <script>
-	import RandomButton from '$lib/randomButton.svelte';
+	import VisSelector from '$lib/visSelector.svelte';
 </script>
 
-<RandomButton />
+<VisSelector />
