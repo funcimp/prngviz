@@ -1,6 +1,7 @@
 import { hexGen24bit, fromHex, toBit } from '$lib/utils';
 
-let cache = {}
+let generateItemsCache = {}
+let dataGridCache = {}
 
 async function asyncGenerateItems(seed, length) {
     return generateItems(seed, length)
@@ -8,9 +9,8 @@ async function asyncGenerateItems(seed, length) {
 
 export function generateItems(seed, length) {
     let key = `${seed}${length}`
-    if (key in cache) {
-        console.log('from cache', key)
-        return cache[key]
+    if (key in generateItemsCache) {
+        return generateItemsCache[key]
     }
 
     let next = hexGen24bit(seed);
@@ -31,24 +31,26 @@ export function generateItems(seed, length) {
         return a
     };
     for (let i = 0; i < length; i++) {
-        // itemsList.push(items)
         let b = toBit(fromHex(items[i]));
         if (b === 0) b = -1;
         itemsList[i] = offSet(b * i, items);
-        // itemsList[i] = offSet(i, items);
     }
-    cache[key] = [items, itemsList]
-
+    generateItemsCache[key] = [items, itemsList]
     return [items, itemsList]
 }
 
-export function gridData(seed, length = 600) {
-    var data = new Array(length);
+export function gridData(seed, length) {
+    let key = `${seed}${length}`
+    if (key in dataGridCache) {
+        console.log("using cache for", key)
+        return dataGridCache[key]
+    }
+    let data = new Array(length);
     let xpos = 1;
     let ypos = 1;
-    var width = 1;
-    var height = 1;
-    let [items, itemsList] = generateItems(seed, length);
+    let width = 1;
+    let height = 1;
+    let [_, itemsList] = generateItems(seed, length);
 
     for (var row = 0; row < length; row++) {
         data[row] = new Array(length);
@@ -65,5 +67,7 @@ export function gridData(seed, length = 600) {
         xpos = 1;
         ypos += height;
     }
+
+    dataGridCache[key] = data
     return data;
 }
