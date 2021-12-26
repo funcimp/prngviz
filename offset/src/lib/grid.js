@@ -1,66 +1,47 @@
 import { hexGen24bit, fromHex, toBit } from '$lib/utils';
 
-let generateItemsCache = {}
 let dataGridCache = {}
 
-async function asyncGenerateItems(seed, length) {
-    return generateItems(seed, length)
-}
-
-export function generateItems(seed, length) {
-    let key = `${seed}${length}`
-    if (key in generateItemsCache) {
-        return generateItemsCache[key]
-    }
-
-    let next = hexGen24bit(seed);
-    let items = [];
-    let itemsList = new Array(length);
-    for (let i = 0; i < length; i++) {
-        items.push(next());
-    }
-    const offSet = (i, l) => {
-        let a = new Array(length)
-        for (let j = 0; j < length; j++) {
-            let m = (i + j) % length
-            if (m < 0) {
-                m = length + m
-            }
-            a[j] = l[m]
-        }
-        return a
-    };
-    for (let i = 0; i < length; i++) {
-        let b = toBit(fromHex(items[i]));
-        if (b === 0) b = -1;
-        itemsList[i] = offSet(b * i, items);
-    }
-    generateItemsCache[key] = [items, itemsList]
-    return [items, itemsList]
-}
-
-export function gridData(seed, length) {
+export function gridData(seed, length, pixelSize) {
     let key = `${seed}${length}`
     if (key in dataGridCache) {
-        console.log("using cache for", key)
         return dataGridCache[key]
     }
     let data = new Array(length);
     let xpos = 1;
     let ypos = 1;
-    let width = 1;
-    let height = 1;
-    let [_, itemsList] = generateItems(seed, length);
+    let width = pixelSize;
+    let height = pixelSize;
 
-    for (var row = 0; row < length; row++) {
+    let next = hexGen24bit(seed);
+
+    const offSet = (i, j, d) => {
+        let l = length
+        let m = (i + j) % length
+        if (m < 0) {
+            m = l + m
+        }
+        return d[m].fill
+    };
+
+    for (let row = 0; row < length; row++) {
         data[row] = new Array(length);
-        for (var column = 0; column < length; column++) {
+        for (let column = 0; column < length; column++) {
+            let fill = '';
+            if (row == 0) {
+                fill = next()
+            } else {
+                let b = toBit(fromHex(data[0][column].fill));
+                if (b === 0) b = -1;
+                fill = offSet(b * row, column, data[0])
+            }
             data[row][column] = {
+                class: 'square',
                 x: xpos,
                 y: ypos,
                 width: width,
                 height: height,
-                fill: itemsList[row][column]
+                fill: fill
             }
             xpos += width;
         }

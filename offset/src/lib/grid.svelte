@@ -14,8 +14,10 @@
 		if (!seed) {
 			return;
 		}
-		let gd = gridData(seed, length);
-		let grid = d3.select('#grid').append('svg').attr('width', '900px').attr('height', '900px');
+		let pixelSize = 2;
+		let gd = gridData(seed, length, pixelSize);
+		let gridSize = `${pixelSize * length}px`;
+		let grid = d3.select('#grid').append('svg').attr('width', gridSize).attr('height', gridSize);
 		let row = grid.selectAll('.row').data(gd).enter().append('g').attr('class', 'row');
 		row
 			.selectAll('.square')
