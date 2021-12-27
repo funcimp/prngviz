@@ -4,10 +4,12 @@
 
 	export let length = 250;
 	export let seed = null;
+	export let triggered = () => {};
 
 	const handleClick = async () => {
 		seed = newSeed();
 		goto(`/${seed}?len=${length}`, { keepfocus: true });
+		triggered();
 	};
 </script>
 

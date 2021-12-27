@@ -6,6 +6,16 @@
 
 	let length;
 	let seed;
+	let ready = false;
+
+	let triggered = () => {
+		ready = false;
+		console.log('triggered');
+	};
+	let rendered = () => {
+		ready = true;
+		console.log('rendered');
+	};
 
 	onMount(() => {
 		length = parseInt($page.query.get('len')) || 250;
@@ -13,6 +23,6 @@
 	});
 </script>
 
-<VisSelector bind:seed bind:length />
+<VisSelector bind:seed bind:length {triggered} />
 <br />
-<Grid {length} {seed} />
+<Grid {length} {seed} {rendered} {ready} />

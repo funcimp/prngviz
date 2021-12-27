@@ -6,8 +6,8 @@
 
 	export let length = 300;
 	export let seed;
-
-	let ready = false;
+	export let rendered = () => {};
+	export let ready = false;
 
 	const drawGrid = () => {
 		d3.select('#grid').selectAll('*').remove();
@@ -30,12 +30,12 @@
 			.attr('width', (d) => d.width)
 			.attr('height', (d) => d.height)
 			.style('fill', (d) => `#${d.fill}`);
+		rendered();
 	};
 
 	beforeUpdate(async () => {
 		// console.log('before update', seed, ready);
 		drawGrid();
-		ready = true;
 	});
 	afterUpdate(async () => {
 		// console.log('after update', seed, ready);

@@ -5,6 +5,7 @@
 
 	export let seed = null;
 	export let length = 250;
+	export let triggered = () => {};
 
 	afterUpdate(() => {
 		if (seed !== null) {
@@ -16,4 +17,4 @@
 <input type="range" id="volume" name="volume" min="5" max="500" step="5" bind:value={length} />
 <label for="volume">Length: {length}</label>
 
-<RandomButton bind:seed {length} />
+<RandomButton bind:seed {length} {triggered} />
